@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<a href="/test.html">
+<a href="/test">
     跳转页面测试
 </a>
 
@@ -34,29 +34,39 @@
 <span id="param"></span>
 
 <script>
+
+
+
     let param = document.getElementById('param');
     function eventHandler(_type){
-        let url = 'http://127.0.0.1:12306';
+        let url = 'http://127.0.0.1:12306/index';
+        let ajax = new XMLHttpRequest()
         switch (_type) {
             case 'get':
-                window.fetch(url+'?type=get', {
-                    method: _type.toUpperCase()
-                }).then(res=>{
-                    param.innerText = JSON.stringify(res.url)
-                }).catch(e=>{
-                    console.log(e)
-                })
+                let _url = url+'/getapi?type=get';
+                console.log(_url)
+                ajax.open('GET', _url, true)
+                ajax.send()
+                ajax.onreadystatechange = function(){
+                    if(ajax.status === 200 && ajax.readyState === 4){
+                        console.log('ok')
+                        console.log(ajax.response)
+                        param.innerText = ajax.response
+                    }
+                }
+                break
             case 'post':
-                window.fetch(url, {
-                    method: _type.toUpperCase(),
-                    body: 'type: post'
-                }).then(res=>{
-                    console.log(res)
-
-                    param.innerText = JSON.stringify(res.url)
-                }).catch(e => {
-                    console.log(e)
-                })
+                ajax.open('POST', url+'/postapi', true)
+                ajax.setRequestHeader('Content-type','application/json')
+                ajax.send(JSON.stringify({type: 'post'}))
+                ajax.onreadystatechange = function(){
+                    if(ajax.status === 200 && ajax.readyState === 4){
+                        console.log('ok')
+                        console.log(ajax.response)
+                        param.innerText = ajax.response
+                    }
+                }
+                break
         }
     }
 
