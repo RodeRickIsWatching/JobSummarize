@@ -9,58 +9,101 @@
     跳转页面测试
 </a>
 
-
 <br/>
 
+<button type="button" onclick="eventHandler('get')">GET请求测试，参数type = get</button>
+
+
+<button type="button" onclick="eventHandler('post')">POST请求测试，参数type = post</button>
+
+<br/><br/><br/>
+<!--<form action="/index" method="post" onsubmit="">-->
 <label for="userName">账号：</label>
-<input type="text" id="userName">
+<input type="text" id="userName" name="userName">
 
 <br/>
 
 <label for="password">密码：</label>
-<input type="text" id="password">
+<input type="password" id="password" name="password">
+
+<br/>
+
+<input type="submit" onclick="userEventHandler('POST')" value="注册">
+<input type="submit" onclick="userEventHandler('POST')" value="登陆">
+<input type="submit" onclick="userEventHandler('DELETE')" value="删除">
+<input type="submit" onclick="userEventHandler('GET')" value="通过账号查询">
+<input type="submit" onclick="userEventHandler('PUSH')" value="修改信息，默认修改密码">
+<!--</form>-->
 
 
 <br/>
 
 
-<button type="button" onclick="eventHandler('get')">GET请求，参数type = get</button>
 
-<button type="button" onclick="eventHandler('post')">POST请求，参数type = post</button>
-
-<!--<button type="button"></button>-->
 <br/>
 
-<span id="param"></span>
+<span id="param" style="display:inline-block; border: 1px solid black; width: 500px; height: 500px; line-height: 500px; text-align: center"></span>
 
 <script>
 
-
-
     let param = document.getElementById('param');
-    function eventHandler(_type){
+    let userName = document.getElementById('userName').value;
+    let password = document.getElementById('password').value;
+
+    function userEventHandler(_type){
+        let url = 'http://127.0.0.1:12306/index/'
+        let ajax = new XMLHttpRequest()
+        switch (_type) {
+            case 'GET':
+                break
+            case 'POST':
+                break
+            case 'DELETE':
+                break
+            case 'PUSH':
+                break
+        }
+    }
+
+    function registerHanler() {
+        let url = 'http://127.0.0.1:12306/index';
+        let ajax = new XMLHttpRequest()
+        let _param = {'userName': userName.value, 'password': password.value}
+        ajax.open('POST', url + '/postapi', true)
+        ajax.setRequestHeader('Content-type', 'application/json')
+        ajax.send(JSON.stringify(_param))
+        ajax.onreadystatechange = function () {
+            if (ajax.status === 200 && ajax.readyState === 4) {
+                console.log('ok', _param)
+                console.log(ajax)
+                param.innerText = ajax.response
+            }
+        }
+    }
+
+
+    function eventHandler(_type) {
         let url = 'http://127.0.0.1:12306/index';
         let ajax = new XMLHttpRequest()
         switch (_type) {
             case 'get':
-                let _url = url+'/getapi?type=get';
+                let _url = url + '/getapi?type=get';
                 console.log(_url)
                 ajax.open('GET', _url, true)
                 ajax.send()
-                ajax.onreadystatechange = function(){
-                    if(ajax.status === 200 && ajax.readyState === 4){
-                        console.log('ok')
-                        console.log(ajax.response)
+                ajax.onreadystatechange = function () {
+                    if (ajax.status === 200 && ajax.readyState === 4) {
+                        console.log('ok', ajax)
                         param.innerText = ajax.response
                     }
                 }
                 break
             case 'post':
-                ajax.open('POST', url+'/postapi', true)
-                ajax.setRequestHeader('Content-type','application/json')
+                ajax.open('POST', url + '/postapi', true)
+                ajax.setRequestHeader('Content-type', 'application/json')
                 ajax.send(JSON.stringify({type: 'post'}))
-                ajax.onreadystatechange = function(){
-                    if(ajax.status === 200 && ajax.readyState === 4){
+                ajax.onreadystatechange = function () {
+                    if (ajax.status === 200 && ajax.readyState === 4) {
                         console.log('ok')
                         console.log(ajax.response)
                         param.innerText = ajax.response
