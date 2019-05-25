@@ -3,15 +3,24 @@ const BodyParse = require('koa-bodyparser')
 const fs = require('fs')
 const path  = require('path')
 
-const configHandler = require('./utils/configHandler')
-const router = require('./router')
+const globalConfig =  require('./conf/globalConfig')
+const RouterList = require('./router/routerList')
 
-const configObj = configHandler(fs.readFileSync(path.resolve(__dirname, './glob.conf'),'utf8'))
+require('./router/userRouter')
+
+// 使用.conf文件
+// const configHandler = require('./utils/configHandler')
+// const configObj = configHandler(fs.readFileSync(path.resolve(process.cwd(), './conf/glob.conf'),'utf8'))
 
 const app = new Koa();
 
-
 app.use(BodyParse())
-app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(configObj.PORT)
+Object.keys(RouterList).forEach(item=>{
+    app.use(RouterList[item].routes()).use(RouterList[item].allowedMethods());
+})
+
+
+app.listen(globalConfig.PORT, ()=>{
+    console.log(`opened on 127.0.0.1:${globalConfig.PORT}，rootSrc: ${globalConfig.ROOT}`)
+})

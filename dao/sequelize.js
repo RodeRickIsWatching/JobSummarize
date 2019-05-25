@@ -2,7 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
 
-const configHandler = require('../utils/configHandler')
+// const configHandler = require('../utils/configHandler')
+// const DB = configHandler(fs.readFileSync(path.resolve(__dirname, '../conf/db.conf'),'utf8'))
+
+const DB = require('../conf/db/dbConfig')
 
 function DBinit({name, user, password, host, port}){
     return new Sequelize(name, user, password, {
@@ -12,7 +15,6 @@ function DBinit({name, user, password, host, port}){
     })
 }
 
-const DB = configHandler(fs.readFileSync(path.resolve(__dirname, './db.conf'),'utf8'))
 
 
 const sequelize = DBinit({name: DB.DB_NAME, user: DB.DB_USER, password: DB.DB_PASSWORD, host: DB.DB_HOST, port: DB.DB_PORT})

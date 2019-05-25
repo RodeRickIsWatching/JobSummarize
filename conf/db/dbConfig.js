@@ -1,0 +1,5 @@
+module.exports.DB_PORT = '3306'
+module.exports.DB_HOST = '127.0.0.1'
+module.exports.DB_USER = 'root'
+module.exports.DB_PASSWORD = ''
+module.exports.DB_NAME = 'userDB'
