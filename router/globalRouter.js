@@ -1,19 +1,28 @@
 const fs = require('fs')
-const path = require('path')
-const userApi = require("../conf/router/userRouterConfig")
-const router = require('./routerList').userRouter
+const path  = require('path')
+
+const globalApi = require("../conf/router/globalApi")
 
 
-router.get(userApi.init, (ctx)=>{
-    ctx.redirect('/index')
-})
+module.exports.init = {
+    method: 'get',
+    api: globalApi.init,
+    cb: (ctx) => {
+        ctx.redirect('/index')
+    }
+}
 
-x
-router.get(userApi.index, (ctx)=>{
-    ctx.response.type = 'text/html;charset=utf-8'
-    ctx.response.status = 200
-    ctx.body = fs.readFileSync(path.join(process.cwd(), '/page/index.html'), 'utf-8')
-})
+module.exports.index = {
+    method: 'get',
+    api: globalApi.index,
+    cb: (ctx) => {
+        ctx.response.type = 'text/html;charset=utf-8'
+        ctx.response.status = 200
+        ctx.body = fs.readFileSync(path.join(process.cwd(), '/page/index.html'), 'utf-8')
+    }
+}
+
+
 
 
 // userRouter.get('/index', ctx => {

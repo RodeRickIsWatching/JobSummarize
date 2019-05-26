@@ -1,12 +1,8 @@
 const Koa = require('koa')
 const BodyParse = require('koa-bodyparser')
-const fs = require('fs')
-const path  = require('path')
 
 const globalConfig =  require('./conf/globalConfig')
 const RouterList = require('./router/routerList')
-
-require('./router/userRouter')
 
 // 使用.conf文件
 // const configHandler = require('./utils/configHandler')
@@ -14,10 +10,12 @@ require('./router/userRouter')
 
 const app = new Koa();
 
+
 app.use(BodyParse())
 
-Object.keys(RouterList).forEach(item=>{
-    app.use(RouterList[item].routes()).use(RouterList[item].allowedMethods());
+
+RouterList.forEach(item=>{
+    app.use(item.routes()).use(item.allowedMethods())
 })
 
 
