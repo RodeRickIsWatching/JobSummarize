@@ -4,6 +4,7 @@ const BodyParse = require('koa-bodyparser')
 const globalConfig =  require('./conf/globalConfig')
 const RouterList = require('./router/routerList')
 
+
 // 使用.conf文件
 // const configHandler = require('./utils/configHandler')
 // const configObj = configHandler(fs.readFileSync(path.resolve(process.cwd(), './conf/glob.conf'),'utf8'))

@@ -22,8 +22,33 @@ module.exports.index = {
     }
 }
 
+module.exports.test = {
+    method: 'get',
+    api: globalApi.test,
+    cb: (ctx) => {
+        ctx.response.type = 'text/html;charset=utf-8'
+        ctx.response.status = 200
+        ctx.body = fs.readFileSync(path.join(process.cwd(), '/page/test.html'), 'utf-8')
+    }
+}
 
+module.exports.getType = {
+    method: 'get',
+    api: globalApi.getType,
+    cb: (ctx) => {
+        ctx.response.status = 200
+        ctx.body = ctx.query
+    }
+}
 
+module.exports.postType = {
+    method: 'post',
+    api: globalApi.postType,
+    cb: (ctx) => {
+        ctx.response.status = 200
+        ctx.body = ctx.request.body
+    }
+}
 
 // userRouter.get('/index', ctx => {
 //     ctx.response.type = 'text/html;charset=utf-8';

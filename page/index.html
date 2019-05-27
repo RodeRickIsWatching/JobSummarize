@@ -28,11 +28,11 @@
 
 <br/>
 
-<input type="submit" onclick="userEventHandler('POST')" value="注册">
-<input type="submit" onclick="userEventHandler('POST')" value="登陆">
+<input type="submit" onclick="userEventHandler('POST', 'signup')" value="注册">
+<input type="submit" onclick="userEventHandler('POST', 'login')" value="登陆">
 <input type="submit" onclick="userEventHandler('DELETE')" value="删除">
 <input type="submit" onclick="userEventHandler('GET')" value="通过账号查询">
-<input type="submit" onclick="userEventHandler('PUSH')" value="修改信息，默认修改密码">
+<input type="submit" onclick="userEventHandler('PUT')" value="修改信息，默认修改密码">
 <!--</form>-->
 
 
@@ -47,39 +47,47 @@
 <script>
 
     let param = document.getElementById('param');
-    let userName = document.getElementById('userName').value;
-    let password = document.getElementById('password').value;
+    let userName = document.getElementById('userName');
+    let password = document.getElementById('password');
 
-    function userEventHandler(_type){
-        let url = 'http://127.0.0.1:12306/index/'
+    function userEventHandler(_type, _param){
+        let url = 'http://127.0.0.1:12306/'
         let ajax = new XMLHttpRequest()
         switch (_type) {
             case 'GET':
+                ajax.open('get', url+'user' , true)
+                ajax.send()
                 break
             case 'POST':
+                ajax.open('post', url+'user' , true)
+                ajax.setRequestHeader('Content-type', 'application/json')
+                let param = {
+                    type: _param,
+                    userName: userName.value,
+                    password: password.value
+                }
+                ajax.send(JSON.stringify(param))
                 break
             case 'DELETE':
+                ajax.open('delete', url+'user' , true)
+                ajax.send()
                 break
-            case 'PUSH':
+            case 'PUT':
+                ajax.open('put', url+'user' , true)
+                ajax.send()
                 break
         }
-    }
-
-    function registerHanler() {
-        let url = 'http://127.0.0.1:12306/index';
-        let ajax = new XMLHttpRequest()
-        let _param = {'userName': userName.value, 'password': password.value}
-        ajax.open('POST', url + '/postapi', true)
-        ajax.setRequestHeader('Content-type', 'application/json')
-        ajax.send(JSON.stringify(_param))
         ajax.onreadystatechange = function () {
             if (ajax.status === 200 && ajax.readyState === 4) {
-                console.log('ok', _param)
-                console.log(ajax)
+                console.log('ok')
                 param.innerText = ajax.response
             }
         }
     }
+
+
+
+
 
 
     function eventHandler(_type) {
@@ -87,7 +95,7 @@
         let ajax = new XMLHttpRequest()
         switch (_type) {
             case 'get':
-                let _url = url + '/getapi?type=get';
+                let _url = url + '/getType?type=get';
                 console.log(_url)
                 ajax.open('GET', _url, true)
                 ajax.send()
@@ -99,7 +107,7 @@
                 }
                 break
             case 'post':
-                ajax.open('POST', url + '/postapi', true)
+                ajax.open('POST', url + '/postType', true)
                 ajax.setRequestHeader('Content-type', 'application/json')
                 ajax.send(JSON.stringify({type: 'post'}))
                 ajax.onreadystatechange = function () {
